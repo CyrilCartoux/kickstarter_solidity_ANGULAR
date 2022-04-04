@@ -1,0 +1,4 @@
+node_modules
+ethereum/.env
+.next
+ethereum/contracts/artifacts
