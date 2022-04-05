@@ -12,6 +12,7 @@ class RequestNew extends Component {
     recipient: "",
     loading: false,
     errorMessage: "",
+    transactionHash: ""
   };
 
   static async getInitialProps(props) {
@@ -32,7 +33,10 @@ class RequestNew extends Component {
       const accounts = await web3.eth.getAccounts();
       await campaign.methods
         .createRequest(description, web3.utils.toWei(value, "ether"), recipient)
-        .send({ from: accounts[0] });
+        .send({ from: accounts[0] })
+        .on("transactionHash", (hash)=> {
+          this.setState({transactionHash: hash})
+        })
       Router.pushRoute(`/campaigns/${this.props.address}/requests`);
     } catch (err) {
       this.setState({ errorMessage: err.message });
@@ -47,7 +51,7 @@ class RequestNew extends Component {
           <a>Back</a>
         </Link>
         <h3>Create a Request</h3>
-        <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
+        <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage} success={!!this.state.transactionHash}>
           <Form.Field>
             <label>Description</label>
             <Input
@@ -74,6 +78,7 @@ class RequestNew extends Component {
             />
           </Form.Field>
           <Message error header="Oops!" content={this.state.errorMessage} />
+          <Message success header="Transaction sent successfully" content={`Transaction hash : ${this.state.transactionHash}`} style={{overflowWrap: "break-word"}} ></Message>
           <Button primary loading={this.state.loading}>
             Create!
           </Button>

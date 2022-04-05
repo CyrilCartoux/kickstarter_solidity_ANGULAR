@@ -10,6 +10,7 @@ class CampaignNew extends Component {
     minimumContribution: "",
     errorMessage: "",
     loading: false,
+    transactionHash:""
   };
 
   onSubmit = async (event) => {
@@ -19,10 +20,12 @@ class CampaignNew extends Component {
     try {
       const accounts = await web3.eth.getAccounts();
       await factory.methods
-        .createCampaign(this.state.minimumContribution)
+        .createCampaign(web3.utils.toWei(this.state.minimumContribution, 'ether'))
         .send({
           from: accounts[0],
-        });
+        }).on("transactionHash", (hash)=> {
+          this.setState({transactionHash: hash})
+        })
 
       Router.pushRoute("/");
     } catch (err) {
@@ -35,11 +38,11 @@ class CampaignNew extends Component {
     return (
       <Layout>
         <h3>Create Campaign</h3>
-        <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
+        <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage} success={!!this.state.transactionHash}>
           <Form.Field>
             <label>Minimum Contribution</label>
             <Input
-              label="wei"
+              label="ether"
               labelPosition="right"
               value={this.state.minimumContribution}
               onChange={(event) =>
@@ -48,6 +51,7 @@ class CampaignNew extends Component {
             />
           </Form.Field>
           <Message error header="Oops!" content={this.state.errorMessage} />
+          <Message success header="Transaction sent successfully" content={`Transaction hash : ${this.state.transactionHash}`} style={{overflowWrap: "break-word"}} ></Message>
           <Button loading={this.state.loading} primary>
             Create!
           </Button>
