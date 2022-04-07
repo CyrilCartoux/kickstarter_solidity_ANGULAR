@@ -14,16 +14,18 @@ class CampaignShow extends Component {
 
     return {
       address: props.query.address,
-      minimumContribution: summary[0],
-      balance: summary[1],
-      requestsCount: summary[2],
-      approversCount: summary[3],
-      manager: summary[4],
+      libelle: summary[0],
+      minimumContribution: summary[1],
+      balance: summary[2],
+      requestsCount: summary[3],
+      approversCount: summary[4],
+      manager: summary[5],
     };
   }
 
   renderCards() {
     const {
+      libelle,
       balance,
       manager,
       minimumContribution,
@@ -71,7 +73,7 @@ class CampaignShow extends Component {
   render() {
     return (
       <Layout>
-        <h3>Campaign Show</h3>
+        <h3>{this.props.libelle}</h3>
         <Grid>
           <Grid.Row>
             <Grid.Column width={10}>{this.renderCards()}</Grid.Column>

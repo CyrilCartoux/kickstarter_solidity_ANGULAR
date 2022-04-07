@@ -7,6 +7,7 @@ import { Router } from "../../routes";
 
 class CampaignNew extends Component {
   state = {
+    libelle: "",
     minimumContribution: "",
     errorMessage: "",
     loading: false,
@@ -20,7 +21,7 @@ class CampaignNew extends Component {
     try {
       const accounts = await web3.eth.getAccounts();
       await factory.methods
-        .createCampaign(web3.utils.toWei(this.state.minimumContribution, 'ether'))
+        .createCampaign(web3.utils.toWei(this.state.minimumContribution, 'ether'), this.state.libelle)
         .send({
           from: accounts[0],
         }).on("transactionHash", (hash)=> {
@@ -39,6 +40,14 @@ class CampaignNew extends Component {
       <Layout>
         <h3>Create Campaign</h3>
         <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage} success={!!this.state.transactionHash}>
+          <Form.Field>
+            <lable>Campaign Libelle</lable>
+            <Input 
+              value={this.state.libelle} 
+              onChange={(event)=> this.setState({libelle: event.target.value})
+              }
+            />
+          </Form.Field>
           <Form.Field>
             <label>Minimum Contribution</label>
             <Input

@@ -6,16 +6,26 @@ import { Link } from "../routes";
 
 class CampaignIndex extends Component {
   static async getInitialProps() {
-    const campaigns = await factory.methods.getDeployedCampaigns().call();
-
+    // const campaigns = await factory.methods.getDeployedCampaigns().call();
+    const campaignsCount = await factory.methods.getDeployedCampaignsCount().call();
+    const campaigns = await Promise.all(
+      Array(parseInt(campaignsCount))
+        .fill()
+        .map((element, index) => {
+          return factory.methods.deployedCampaigns(index).call();
+        })
+    );
     return { campaigns };
   }
   renderCampaigns() {
-    const items = this.props.campaigns.map((address) => {
+    const items = this.props.campaigns.map((campaign) => {
       return {
-        header: address,
+        header: campaign.libelle,
+        meta:(
+          <p>{campaign.campaignAddress}</p>
+        ),
         description: (
-          <Link route={`/campaigns/${address}`}>
+          <Link route={`/campaigns/${campaign.campaignAddress}`}>
             <a>View Campaign</a>
           </Link>
         ),

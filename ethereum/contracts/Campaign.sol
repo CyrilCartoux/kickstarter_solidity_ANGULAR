@@ -1,15 +1,21 @@
 pragma solidity ^0.4.17;
 
 contract CampaignFactory {
-    address[] public deployedCampaigns;
-
-    function createCampaign(uint minimum) public {
-        address newCampaign = new Campaign(minimum, msg.sender);
-        deployedCampaigns.push(newCampaign);
+    CampaignStruct[] public deployedCampaigns;
+    uint public campaignsCount = 0;
+    struct CampaignStruct {
+        address campaignAddress;
+        string libelle;
     }
 
-    function getDeployedCampaigns() public view returns (address[]) {
-        return deployedCampaigns;
+    function createCampaign(uint minimum, string memory lib) public {
+        address newCampaign = new Campaign(minimum, lib, msg.sender);
+        campaignsCount++;
+        deployedCampaigns.push(CampaignStruct(newCampaign, lib));
+    }
+
+    function getDeployedCampaignsCount() public view returns (uint) {
+        return campaignsCount;
     }
 }
 
@@ -26,6 +32,7 @@ contract Campaign {
     Request[] public requests;
     address public manager;
     uint public minimumContribution;
+    string public libelle;
     mapping(address => bool) public approvers;
     uint public approversCount;
 
@@ -34,9 +41,10 @@ contract Campaign {
         _;
     }
 
-    function Campaign(uint minimum, address creator) public {
+    function Campaign(uint minimum,string memory lib, address creator) public {
         manager = creator;
         minimumContribution = minimum;
+        libelle = lib;
     }
 
     function contribute() public payable {
@@ -79,6 +87,7 @@ contract Campaign {
     }
 
     function getSummary() public view returns (
+        string,
         uint,
         uint, 
         uint,
@@ -86,6 +95,7 @@ contract Campaign {
         address
     ) {
         return (
+            libelle,
             minimumContribution, 
             this.balance,
             requests.length,
