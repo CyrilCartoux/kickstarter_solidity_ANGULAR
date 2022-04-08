@@ -2,6 +2,7 @@ const assert = require("assert");
 const ganache = require("ganache-cli");
 const Web3 = require("web3");
 const web3 = new Web3(ganache.provider());
+const {shouldThrow} = require('./utils/helper')
 
 const compiledFactory = require("../ethereum/build/CampaignFactory.json");
 const compiledCampaign = require("../ethereum/build/Campaign.json");
@@ -18,12 +19,12 @@ beforeEach(async () => {
     .deploy({ data: compiledFactory.bytecode })
     .send({ from: accounts[0], gas: "1000000" });
 
-  await factory.methods.createCampaign("100").send({
+  await factory.methods.createCampaign("100", "Libelle").send({
     from: accounts[0],
     gas: "1000000",
   });
 
-  [campaignAddress] = await factory.methods.getDeployedCampaigns().call();
+  const {campaignAddress, libelle} = await factory.methods.deployedCampaigns(0).call();
   campaign = await new web3.eth.Contract(
     JSON.parse(compiledCampaign.interface),
     campaignAddress
@@ -41,6 +42,21 @@ describe("Campaigns", () => {
     assert.equal(accounts[0], manager);
   });
 
+  it("should have a campaign libelle", async() => {
+    const libelle = await campaign.methods.libelle().call();
+    assert.equal(libelle, "Libelle");
+  });
+
+  it('should return campaign count ', async() => {
+    const count = await factory.methods.campaignsCount().call();
+    assert.equal(count, 1);
+  });
+
+  it("should return one campaign", async()=> {
+    let campaignReturned = await factory.methods.deployedCampaigns(0).call();
+    assert.ok(campaignReturned);
+  });
+
   it("allows people to contribute money and marks them as approvers", async () => {
     await campaign.methods.contribute().send({
       value: "200",
@@ -51,15 +67,16 @@ describe("Campaigns", () => {
   });
 
   it("requires a minimum contribution", async () => {
-    try {
-      await campaign.methods.contribute().send({
-        value: "5",
-        from: accounts[1],
-      });
-      assert(false);
-    } catch (err) {
-      assert(err);
-    }
+    // try {
+    //   await campaign.methods.contribute().send({
+    //     value: "5",
+    //     from: accounts[1],
+    //   });
+    //   assert(false);
+    // } catch (err) {
+    //   assert(err);
+    // }
+    await shouldThrow(campaign.methods.contribute().send({from: accounts[1], value:"5"}))
   });
 
   it("allows a manager to make a payment request", async () => {
