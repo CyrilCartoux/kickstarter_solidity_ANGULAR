@@ -5,6 +5,10 @@ import Layout from "../components/Layout";
 import { Link } from "../routes";
 
 class CampaignIndex extends Component {
+  constructor() {
+    super();
+    this.state = {accounts: null}
+  }
   static async getInitialProps() {
     // const campaigns = await factory.methods.getDeployedCampaigns().call();
     const campaignsCount = await factory.methods.getDeployedCampaignsCount().call();
@@ -17,6 +21,8 @@ class CampaignIndex extends Component {
     );
     return { campaigns };
   }
+  
+  
   renderCampaigns() {
     const items = this.props.campaigns.map((campaign) => {
       return {
