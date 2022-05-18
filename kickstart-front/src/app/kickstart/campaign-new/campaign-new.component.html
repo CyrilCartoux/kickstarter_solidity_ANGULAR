@@ -1,0 +1,10 @@
+<h1>Create a new campaign</h1>
+<mat-form-field class="example-full-width" appearance="fill">
+  <mat-label>Campaign libelle</mat-label>
+  <input [(ngModel)]="libelle" matInput placeholder="Ex. Create a floating skateboard">
+</mat-form-field>
+<mat-form-field class="example-full-width" appearance="fill">
+  <mat-label>Minimum contribution</mat-label>
+  <input [(ngModel)]="minimumContribution" matInput placeholder="Ex. 0.21ether">
+</mat-form-field>
+<button (click)="onCreateNewCampaign()" mat-raised-button color="primary">Create</button>
