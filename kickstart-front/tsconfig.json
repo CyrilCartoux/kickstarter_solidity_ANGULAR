@@ -17,11 +17,23 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2017",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "module": "es2020",
     "lib": [
       "es2020",
       "dom"
-    ]
+    ],
+    "paths" : {
+      "crypto": ["./node_modules/crypto-browserify"],
+      "stream": ["./node_modules/stream-browserify"],
+      "assert": ["./node_modules/assert"],
+      "http": ["./node_modules/stream-http"],
+      "https": ["./node_modules/https-browserify"],
+      "os": ["./node_modules/os-browserify"],
+      "prop-types":["./node_modules/prop-types"],
+      "url": ["./node_modules/url"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
