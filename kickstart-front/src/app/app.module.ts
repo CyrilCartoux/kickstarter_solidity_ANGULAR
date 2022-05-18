@@ -8,9 +8,10 @@ import { HeaderComponent } from './header/header.component';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent],
+  declarations: [AppComponent, HeaderComponent, PageNotFoundComponent],
   imports: [BrowserModule,BrowserAnimationsModule, AppRoutingModule, MatToolbarModule, MatIconModule],
   providers: [],
   bootstrap: [AppComponent],

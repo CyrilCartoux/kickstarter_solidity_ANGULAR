@@ -1,13 +1,21 @@
-import { NewCampaignComponent } from './new-campaign/new-campaign.component';
+import { CampaignNewComponent } from './campaign-new/campaign-new.component';
+
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CampaignListComponent } from './campaign-list/campaign-list.component';
 
-const routes: Routes = [{
-  path: 'new', component: NewCampaignComponent
-}];
+const routes: Routes = [
+  {
+    path:'', component: CampaignListComponent
+  },
+  {
+    path: 'new',
+    component: CampaignNewComponent,
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class KickstartRoutingModule { }
+export class KickstartRoutingModule {}

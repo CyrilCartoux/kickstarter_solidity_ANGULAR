@@ -1,17 +1,27 @@
-import { NgModule } from '@angular/core';
+// Services
+import { CampaignService } from './../services/campaign.service';
+// Components
+import { CampaignNewComponent } from './campaign-new/campaign-new.component';
+import { CampaignListComponent } from './campaign-list/campaign-list.component';
+// Modules
 import { CommonModule } from '@angular/common';
-
+import { NgModule } from '@angular/core';
 import { KickstartRoutingModule } from './kickstart-routing.module';
-import { NewCampaignComponent } from './new-campaign/new-campaign.component';
-
+// Material
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
-  declarations: [
-    NewCampaignComponent
-  ],
+  declarations: [CampaignListComponent, CampaignNewComponent],
   imports: [
     CommonModule,
-    KickstartRoutingModule
-  ]
+    FormsModule,
+    KickstartRoutingModule,
+    // Meterial
+    MatInputModule,
+    MatButtonModule
+  ],
+  providers: [CampaignService],
 })
-export class KickstartModule { }
+export class KickstartModule {}
