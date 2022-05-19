@@ -21,5 +21,4 @@ export class CampaignNewComponent implements OnInit {
   onCreateNewCampaign() {
     this.campaignService.createCampaign(this.libelle, this.minimumContribution);
   }
-
 }

@@ -1,15 +1,21 @@
+import { CampaignService } from './../../services/campaign.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-campaign-list',
   templateUrl: './campaign-list.component.html',
-  styleUrls: ['./campaign-list.component.less']
+  styleUrls: ['./campaign-list.component.less'],
 })
 export class CampaignListComponent implements OnInit {
+  campaignsList: any;
 
-  constructor() { }
+  constructor(private campaignService: CampaignService) {}
 
   ngOnInit(): void {
+    this.getDeployedCampaigns();
   }
 
+  async getDeployedCampaigns() {
+    this.campaignsList = await this.campaignService.getDeployedCampaigns();
+  }
 }

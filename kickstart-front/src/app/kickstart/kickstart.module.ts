@@ -11,6 +11,7 @@ import { KickstartRoutingModule } from './kickstart-routing.module';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [CampaignListComponent, CampaignNewComponent],
@@ -20,7 +21,8 @@ import { MatButtonModule } from '@angular/material/button';
     KickstartRoutingModule,
     // Meterial
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCardModule,
   ],
   providers: [CampaignService],
 })

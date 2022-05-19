@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import web3 from './web3-instance';
 import CampaignFactoryContract from './campaign-factory';
 import Campaign from '../../contracts/Campaign.json';
-import { from, map, Observable } from 'rxjs';
+import { from, map, Observable, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -20,13 +20,14 @@ export class CampaignService {
     this.getAccounts();
   }
 
-  public getAccounts(){
-    from<string>(this.web3js.eth.getAccounts()).pipe(
-      map((accounts) => {
-        return accounts[0];
-      })
-    )
-    .subscribe(acc => this.account = acc);
+  public getAccounts() {
+    from<string>(this.web3js.eth.getAccounts())
+      .pipe(
+        map((accounts) => {
+          return accounts[0];
+        })
+      )
+      .subscribe((acc) => (this.account = acc));
   }
 
   /**
@@ -35,9 +36,20 @@ export class CampaignService {
    * @param minimumContribution
    */
   public createCampaign(libelle: string, minimumContribution: number) {
-    this.CampaignFactoryContract.methods.createCampaign(
-      this.web3js.utils.toWei(minimumContribution),
-      libelle
-    ).send({from: this.account});
+    this.CampaignFactoryContract.methods
+      .createCampaign(this.web3js.utils.toWei(minimumContribution), libelle)
+      .send({ from: this.account });
+  }
+
+  public async getDeployedCampaigns() {
+    const campaignsCount = await this.CampaignFactoryContract.methods.getDeployedCampaignsCount().call();
+    const campaigns = await Promise.all(
+      Array(parseInt(campaignsCount))
+        .fill(campaignsCount)
+        .map((element, index) => {
+          return this.CampaignFactoryContract.methods.deployedCampaigns(index).call();
+        })
+    );
+    return campaigns;
   }
 }
