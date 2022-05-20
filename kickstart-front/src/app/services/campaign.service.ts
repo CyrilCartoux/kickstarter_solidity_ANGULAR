@@ -84,6 +84,34 @@ export class CampaignService {
     this.CampaignContract.methods.contribute().send({from: this.account, value: web3.utils.toWei(amount, "ether")});
   }
 
+  public getRequestsCount(address: string): Observable<string> {
+    this.instantiateCampaignContract(address);
+    return from<string>(this.CampaignContract.methods.getRequestsCount().call({from: this.account}));
+  }
+  public getApproversCount(address: string):Observable<string> {
+    this.instantiateCampaignContract(address);
+    return from<string>(this.CampaignContract.methods.approversCount().call({from: this.account}));
+  }
+
+  public getRequests(address: string) {
+    let requests = null;
+    this.getRequestsCount(address)
+      .subscribe(async count => {
+        requests = await Promise.all(
+          Array(parseInt(count))
+            .fill(count)
+            .map((element, index) => {
+              return this.CampaignContract.methods.requests(index).call();
+            })
+        );
+        return requests;
+      })
+  }
+
+  public createRequest(address: string, description: string, value: number, recipient: string) {
+
+  }
+
   private instantiateCampaignContract(address: string) {
     this.CampaignContract = Campaign(address);
   }

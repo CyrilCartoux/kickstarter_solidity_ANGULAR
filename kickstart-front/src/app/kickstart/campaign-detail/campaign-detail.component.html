@@ -1,54 +1,62 @@
-<div>
+<div class="main">
+  <div *ngIf="campaignDetail" class="grid-view">
     <mat-card>
-    <mat-card-title>{{campaignDetail.libelle}}</mat-card-title>
-    <mat-card-subtitle>Managed by. {{campaignDetail.manager}}</mat-card-subtitle>
+      <mat-card-title>{{campaignDetail.libelle}}</mat-card-title>
+      <mat-card-subtitle>Managed by. {{campaignDetail.manager}}</mat-card-subtitle>
     </mat-card>
     <mat-card>
-    <mat-card-title>{{campaignDetail.minimumContribution}} ether</mat-card-title>
-    <mat-card-subtitle>Campaign minimum contribution</mat-card-subtitle>
-    <mat-card-content>
+      <mat-card-title>{{campaignDetail.minimumContribution}} ether</mat-card-title>
+      <mat-card-subtitle>Campaign minimum contribution</mat-card-subtitle>
+      <mat-card-content>
         <p>
-        Minimum contribution to become an approver and approve spending requests.
+          Minimum contribution to become an approver and approve spending requests.
         </p>
-    </mat-card-content>
+      </mat-card-content>
     </mat-card>
     <mat-card>
-    <mat-card-title>{{campaignDetail.balance}} ether</mat-card-title>
-    <mat-card-subtitle>Campaign balance</mat-card-subtitle>
-    <mat-card-content>
+      <mat-card-title>{{campaignDetail.balance}} ether</mat-card-title>
+      <mat-card-subtitle>Campaign balance</mat-card-subtitle>
+      <mat-card-content>
         <p>
-        Total amount of ether received.
+          Total amount of ether received.
         </p>
-    </mat-card-content>
+      </mat-card-content>
     </mat-card>
     <mat-card>
-    <mat-card-title>{{campaignDetail.requests}}</mat-card-title>
-    <mat-card-subtitle>Campaign spending requests</mat-card-subtitle>
-    <mat-card-content>
+      <mat-card-title>{{campaignDetail.requests}}</mat-card-title>
+      <mat-card-subtitle>Campaign spending requests</mat-card-subtitle>
+      <mat-card-content>
         <p>
-        Total amount of spending requests.
+          Total amount of spending requests.
         </p>
-    </mat-card-content>
-    <mat-card-actions>
-        <button color="primary" mat-stroked-button>View requests</button>
-    </mat-card-actions>
+      </mat-card-content>
+      <mat-card-actions>
+        <button color="primary" routerLink="/campaign/detail/{{address}}/requests" mat-stroked-button>View
+          requests</button>
+        <button color="primary" routerLink="/campaign/detail/{{address}}/requests/new" mat-stroked-button>Create
+          request</button>
+      </mat-card-actions>
     </mat-card>
     <mat-card>
-    <mat-card-title>{{campaignDetail.approversCount}}</mat-card-title>
-    <mat-card-subtitle>Campaign approvers</mat-card-subtitle>
-    <mat-card-content>
+      <mat-card-title>{{campaignDetail.approversCount}}</mat-card-title>
+      <mat-card-subtitle>Campaign approvers</mat-card-subtitle>
+      <mat-card-content>
         <p>
-        Total number of approvers.
+          Total number of approvers.
         </p>
-    </mat-card-content>
+      </mat-card-content>
     </mat-card>
-</div>
-<div>
+  </div>
+
+  <div class="contribute-block">
     <h1>Contribute to this campaign</h1>
-<mat-form-field class="example-full-width" appearance="fill">
-  <mat-label>Amount to contribute</mat-label>
-  <input [(ngModel)]="amountToContribute" matInput placeholder="Ex. 0.05 ether">
-</mat-form-field>
-<button (click)="onContribute()" mat-raised-button color="primary">Contribute</button>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Amount to contribute</mat-label>
+      <input [(ngModel)]="amountToContribute" matInput placeholder="Ex. 0.05 ether">
+    </mat-form-field>
+    <button [disabled]="!amountToContribute" (click)="onContribute()" mat-raised-button color="primary">Contribute</button>
+  </div>
+
+  <router-outlet></router-outlet>
 
 </div>
