@@ -1,3 +1,4 @@
+import { CampaignDetailComponent } from './campaign-detail/campaign-detail.component';
 import { CampaignNewComponent } from './campaign-new/campaign-new.component';
 
 import { NgModule } from '@angular/core';
@@ -12,6 +13,9 @@ const routes: Routes = [
     path: 'new',
     component: CampaignNewComponent,
   },
+  {
+    path: 'detail/:address', component: CampaignDetailComponent
+  }
 ];
 
 @NgModule({

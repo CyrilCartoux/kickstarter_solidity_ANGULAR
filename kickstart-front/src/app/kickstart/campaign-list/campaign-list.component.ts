@@ -1,3 +1,4 @@
+import { CampaignList } from './../../models/campaign-list';
 import { CampaignService } from './../../services/campaign.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./campaign-list.component.less'],
 })
 export class CampaignListComponent implements OnInit {
-  campaignsList: any;
+  campaignsList: CampaignList[] = [];
 
   constructor(private campaignService: CampaignService) {}
 

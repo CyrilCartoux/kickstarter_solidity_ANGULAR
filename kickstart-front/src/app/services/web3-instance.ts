@@ -2,7 +2,7 @@
  * Instanciate Web3
  */
 import Web3 from 'web3';
-let web3:any;
+let web3: any;
 
 if (
   typeof (window as any) !== 'undefined' &&

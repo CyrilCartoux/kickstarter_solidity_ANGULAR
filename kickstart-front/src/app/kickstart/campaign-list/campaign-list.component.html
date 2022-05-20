@@ -1,3 +1,5 @@
+<button routerLink="/campaign/new" mat-raised-button color="primary">Create</button>
+
 <mat-card class="example-card" *ngFor="let campaign of campaignsList">
   <mat-card-title>{{campaign.libelle}}</mat-card-title>
   <mat-card-subtitle>{{campaign.campaignAddress}}</mat-card-subtitle>
@@ -5,6 +7,6 @@
     <p>Lorem ipsum</p>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-button>View details</button>
+    <button mat-button routerLink="/campaign/detail/{{campaign.campaignAddress}}">View details</button>
   </mat-card-actions>
 </mat-card>

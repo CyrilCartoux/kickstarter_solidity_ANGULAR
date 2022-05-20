@@ -1,8 +1,9 @@
+import { CampaignList } from './../models/campaign-list';
 import { Injectable } from '@angular/core';
 import web3 from './web3-instance';
 import CampaignFactoryContract from './campaign-factory';
-import Campaign from '../../contracts/Campaign.json';
-import { from, map, Observable, switchMap } from 'rxjs';
+import Campaign from './campaign';
+import { from, map, Observable, ObservableInput, switchMap, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,6 @@ export class CampaignService {
   constructor() {
     this.web3js = web3;
     this.CampaignFactoryContract = CampaignFactoryContract;
-    this.CampaignContract = Campaign;
     this.getAccounts();
   }
 
@@ -41,15 +41,50 @@ export class CampaignService {
       .send({ from: this.account });
   }
 
-  public async getDeployedCampaigns() {
-    const campaignsCount = await this.CampaignFactoryContract.methods.getDeployedCampaignsCount().call();
+  /**
+   * Returns a list of deployed campaigns
+   * @returns CampaignList[]
+   */
+  public async getDeployedCampaigns(): Promise<CampaignList[]> {
+    const campaignsCount = await this.CampaignFactoryContract.methods
+      .getDeployedCampaignsCount()
+      .call();
     const campaigns = await Promise.all(
       Array(parseInt(campaignsCount))
         .fill(campaignsCount)
         .map((element, index) => {
-          return this.CampaignFactoryContract.methods.deployedCampaigns(index).call();
+          return this.CampaignFactoryContract.methods
+            .deployedCampaigns(index)
+            .call();
         })
     );
     return campaigns;
+  }
+
+  public getSummary(address: string): Observable<any> {
+    this.instantiateCampaignContract(address);
+    return from<ObservableInput<any>>(
+      this.CampaignContract.methods.getSummary().call()
+    ).pipe(
+      map((summary: any) => {
+        return {
+          libelle: summary[0],
+          minimumContribution: this.web3js.utils.fromWei(summary[1]),
+          balance: this.web3js.utils.fromWei(summary[2]),
+          requests: summary[3],
+          approversCount: summary[4],
+          manager: summary[5],
+        };
+      })
+    );
+  }
+
+  public contribute(address:string, amount: number) {
+    this.instantiateCampaignContract(address);
+    this.CampaignContract.methods.contribute().send({from: this.account, value: web3.utils.toWei(amount, "ether")});
+  }
+
+  private instantiateCampaignContract(address: string) {
+    this.CampaignContract = Campaign(address);
   }
 }

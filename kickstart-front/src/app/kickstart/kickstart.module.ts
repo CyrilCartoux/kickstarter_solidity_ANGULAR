@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 // Services
 import { CampaignService } from './../services/campaign.service';
 // Components
@@ -12,14 +13,16 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { CampaignDetailComponent } from './campaign-detail/campaign-detail.component';
 
 @NgModule({
-  declarations: [CampaignListComponent, CampaignNewComponent],
+  declarations: [CampaignListComponent, CampaignNewComponent, CampaignDetailComponent],
   imports: [
     CommonModule,
     FormsModule,
+    RouterModule,
     KickstartRoutingModule,
-    // Meterial
+    // Material
     MatInputModule,
     MatButtonModule,
     MatCardModule,
