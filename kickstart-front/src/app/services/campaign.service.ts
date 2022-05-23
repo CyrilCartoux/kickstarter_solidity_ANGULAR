@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import web3 from './web3-instance';
 import CampaignFactoryContract from './campaign-factory';
 import Campaign from './campaign';
-import { from, map, Observable, ObservableInput, switchMap, take } from 'rxjs';
+import { from, map, Observable, ObservableInput, Subject, switchMap, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -79,37 +79,56 @@ export class CampaignService {
     );
   }
 
-  public contribute(address:string, amount: number) {
+  public contribute(address: string, amount: number) {
     this.instantiateCampaignContract(address);
-    this.CampaignContract.methods.contribute().send({from: this.account, value: web3.utils.toWei(amount, "ether")});
+    this.CampaignContract.methods
+      .contribute()
+      .send({ from: this.account, value: web3.utils.toWei(amount, 'ether') });
   }
 
   public getRequestsCount(address: string): Observable<string> {
     this.instantiateCampaignContract(address);
-    return from<string>(this.CampaignContract.methods.getRequestsCount().call({from: this.account}));
+    return from<string>(
+      this.CampaignContract.methods
+        .getRequestsCount()
+        .call({ from: this.account })
+    );
   }
-  public getApproversCount(address: string):Observable<string> {
+  public getApproversCount(address: string): Observable<string> {
     this.instantiateCampaignContract(address);
-    return from<string>(this.CampaignContract.methods.approversCount().call({from: this.account}));
+    return from<string>(
+      this.CampaignContract.methods
+        .approversCount()
+        .call({ from: this.account })
+    );
   }
 
-  public getRequests(address: string) {
+  public getRequests(address: string):Observable<Request[]> {
     let requests = null;
-    this.getRequestsCount(address)
-      .subscribe(async count => {
-        requests = await Promise.all(
-          Array(parseInt(count))
-            .fill(count)
-            .map((element, index) => {
-              return this.CampaignContract.methods.requests(index).call();
-            })
-        );
-        return requests;
-      })
+    let subject = new Subject<Request[]>();
+    this.getRequestsCount(address).subscribe(async (count) => {
+      requests = await Promise.all(
+        Array(parseInt(count))
+          .fill(count)
+          .map((element, index) => {
+            return this.CampaignContract.methods.requests(index).call();
+          })
+      );
+      subject.next(requests);
+    });
+    return subject.asObservable();
   }
 
-  public createRequest(address: string, description: string, value: number, recipient: string) {
-
+  public createRequest(
+    address: string,
+    description: string,
+    value: number,
+    recipient: string
+  ) {
+    this.instantiateCampaignContract(address);
+    this.CampaignContract.methods
+      .createRequest(description, web3.utils.toWei(value, 'ether'), recipient)
+      .send({ from: this.account });
   }
 
   private instantiateCampaignContract(address: string) {
