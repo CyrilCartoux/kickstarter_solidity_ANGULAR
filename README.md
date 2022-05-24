@@ -1,6 +1,8 @@
-[![Test/Build Github Actions](https://github.com/CyrilCartoux/kickstarter_solidity_ANGULAR/actions/workflows/main.yml/badge.svg)](https://github.com/CyrilCartoux/kickstarter_solidity_ANGULAR/actions/workflows/main.yml)
+[![pages-build-deployment](https://github.com/CyrilCartoux/Lottery_Solidity_Angular/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/CyrilCartoux/Lottery_Solidity_Angular/actions/workflows/pages/pages-build-deployment)
 
+[![Test/Build Github Actions](https://github.com/CyrilCartoux/Lottery_Solidity_Angular/actions/workflows/main.yml/badge.svg)](https://github.com/CyrilCartoux/Lottery_Solidity_Angular/actions/workflows/main.yml)
 
+LIVE AT https://cyrilcartoux.github.io/kickstarter_solidity_ANGULAR/campaign
 First run 
 npm install
 
