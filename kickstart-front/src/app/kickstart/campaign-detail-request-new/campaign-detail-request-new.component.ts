@@ -1,6 +1,7 @@
+import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { CampaignService } from './../../services/campaign.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -8,9 +9,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './campaign-detail-request-new.component.html',
   styleUrls: ['./campaign-detail-request-new.component.less'],
 })
-export class CampaignDetailRequestNewComponent implements OnInit {
+export class CampaignDetailRequestNewComponent implements OnInit, OnDestroy {
   requestForm!: FormGroup;
   address!: string;
+  subscription: Subscription = new Subscription();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,6 +29,10 @@ export class CampaignDetailRequestNewComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
   initForm() {
     this.requestForm = this.formBuilder.group({
       description: ['', Validators.required],
@@ -35,11 +41,13 @@ export class CampaignDetailRequestNewComponent implements OnInit {
     });
   }
   onSendRequest() {
-    this.campaignService.createRequest(
+    this.subscription.add(this.campaignService.createRequest(
       this.address,
       this.requestForm.value.description,
       this.requestForm.value.value,
       this.requestForm.value.recipient
-    );
+    ).subscribe((result)=> {
+      this.campaignService.stopTxHash$.next(true);
+    }))
   }
 }

@@ -13,7 +13,7 @@ export class CampaignDetailComponent implements OnInit, OnDestroy {
   address!: string;
   campaignDetail!: CampaignDetail;
   subscriptions: Subscription = new Subscription();
-  amountToContribute! :number;
+  amountToContribute!: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,6 +44,12 @@ export class CampaignDetailComponent implements OnInit, OnDestroy {
   }
 
   onContribute() {
-    this.campaignService.contribute(this.address, this.amountToContribute);
+    this.subscriptions.add(
+      this.campaignService
+        .contribute(this.address, this.amountToContribute)
+        .subscribe((result) => {
+          this.campaignService.stopTxHash$.next(true);
+        })
+    );
   }
 }

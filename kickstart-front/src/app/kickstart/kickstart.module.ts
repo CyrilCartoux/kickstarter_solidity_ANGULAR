@@ -6,6 +6,7 @@ import { CampaignListComponent } from './campaign-list/campaign-list.component';
 import { CampaignDetailComponent } from './campaign-detail/campaign-detail.component';
 import { CampaignDetailRequestListComponent } from './campaign-detail-request-list/campaign-detail-request-list.component';
 import { CampaignDetailRequestNewComponent } from './campaign-detail-request-new/campaign-detail-request-new.component';
+import { ShowTxhashComponent } from './../show-txhash/show-txhash.component';
 // Modules
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -18,10 +19,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableModule} from '@angular/material/table';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 
 @NgModule({
-  declarations: [CampaignListComponent, CampaignNewComponent, CampaignDetailComponent, CampaignDetailRequestListComponent, CampaignDetailRequestNewComponent],
+  declarations: [CampaignListComponent, CampaignNewComponent, CampaignDetailComponent, CampaignDetailRequestListComponent, CampaignDetailRequestNewComponent, ShowTxhashComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -33,7 +35,8 @@ import {MatTableModule} from '@angular/material/table';
     MatButtonModule,
     MatCardModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatProgressBarModule
   ],
   providers: [CampaignService],
 })

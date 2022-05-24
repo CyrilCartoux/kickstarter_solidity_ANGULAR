@@ -3,7 +3,14 @@ import { Injectable } from '@angular/core';
 import web3 from './web3-instance';
 import CampaignFactoryContract from './campaign-factory';
 import Campaign from './campaign';
-import { from, map, Observable, ObservableInput, Subject, switchMap, take } from 'rxjs';
+import {
+  BehaviorSubject,
+  from,
+  map,
+  Observable,
+  ObservableInput,
+  Subject,
+} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -14,20 +21,28 @@ export class CampaignService {
   CampaignContract: any;
   account!: string;
 
+  private txHash: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  public txHash$ = this.txHash.asObservable();
+
+  private stopTxHash: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+  public get stopTxHash$() {
+    return this.stopTxHash;
+  }
+
   constructor() {
     this.web3js = web3;
     this.CampaignFactoryContract = CampaignFactoryContract;
-    this.getAccounts();
+    this.getAccounts().subscribe((acc) => (this.account = acc));
   }
 
   public getAccounts() {
-    from<string>(this.web3js.eth.getAccounts())
-      .pipe(
-        map((accounts) => {
-          return accounts[0];
-        })
-      )
-      .subscribe((acc) => (this.account = acc));
+    return from<string>(this.web3js.eth.getAccounts()).pipe(
+      map((accounts) => {
+        return accounts[0];
+      })
+    );
   }
 
   /**
@@ -35,10 +50,18 @@ export class CampaignService {
    * @param libelle
    * @param minimumContribution
    */
-  public createCampaign(libelle: string, minimumContribution: number) {
-    this.CampaignFactoryContract.methods
-      .createCampaign(this.web3js.utils.toWei(minimumContribution), libelle)
-      .send({ from: this.account });
+  public createCampaign(
+    libelle: string,
+    minimumContribution: number
+  ): Observable<any> {
+    return from(
+      this.CampaignFactoryContract.methods
+        .createCampaign(this.web3js.utils.toWei(minimumContribution), libelle)
+        .send({ from: this.account })
+        .on('transactionHash', (hash: string) => {
+          this.txHash.next(hash);
+        })
+    );
   }
 
   /**
@@ -79,11 +102,16 @@ export class CampaignService {
     );
   }
 
-  public contribute(address: string, amount: number) {
+  public contribute(address: string, amount: number): Observable<any> {
     this.instantiateCampaignContract(address);
-    this.CampaignContract.methods
-      .contribute()
-      .send({ from: this.account, value: web3.utils.toWei(amount, 'ether') });
+    return from(
+      this.CampaignContract.methods
+        .contribute()
+        .send({ from: this.account, value: web3.utils.toWei(amount, 'ether') })
+        .on('transactionHash', (hash: string) => {
+          this.txHash.next(hash);
+        })
+    );
   }
 
   public getRequestsCount(address: string): Observable<string> {
@@ -103,7 +131,7 @@ export class CampaignService {
     );
   }
 
-  public getRequests(address: string):Observable<Request[]> {
+  public getRequests(address: string): Observable<Request[]> {
     let requests = null;
     let subject = new Subject<Request[]>();
     this.getRequestsCount(address).subscribe(async (count) => {
@@ -124,14 +152,52 @@ export class CampaignService {
     description: string,
     value: number,
     recipient: string
-  ) {
+  ): Observable<any> {
     this.instantiateCampaignContract(address);
-    this.CampaignContract.methods
-      .createRequest(description, web3.utils.toWei(value, 'ether'), recipient)
-      .send({ from: this.account });
+    return from(
+      this.CampaignContract.methods
+        .createRequest(description, web3.utils.toWei(value, 'ether'), recipient)
+        .send({ from: this.account })
+        .on('transactionHash', (hash: string) => {
+          this.txHash.next(hash);
+        })
+    );
+  }
+
+  public approveRequest(address: string, requestId: number): Observable<any> {
+    this.instantiateCampaignContract(address);
+    return from(
+      this.CampaignContract.methods
+        .approveRequest(requestId)
+        .send({ from: this.account })
+        .on('transactionHash', (hash: string) => {
+          this.txHash.next(hash);
+        })
+    );
+  }
+
+  public finalizeRequest(address: string, requestId: number): Observable<any> {
+    this.instantiateCampaignContract(address);
+    return from(
+      this.CampaignContract.methods
+        .finalizeRequest(requestId)
+        .send({ from: this.account })
+        .on('transactionHash', (hash: string) => {
+          this.txHash.next(hash);
+        })
+    );
+  }
+
+  public getManager(address: string): Observable<string> {
+    this.instantiateCampaignContract(address);
+    return from<string>(this.CampaignContract.methods.manager().call());
   }
 
   private instantiateCampaignContract(address: string) {
     this.CampaignContract = Campaign(address);
+  }
+  public isAnApprover(campaignAddress: string, userAddress: string): Promise<string> {
+    this.instantiateCampaignContract(campaignAddress);
+    return this.CampaignContract.methods.approvers(userAddress).call()
   }
 }
