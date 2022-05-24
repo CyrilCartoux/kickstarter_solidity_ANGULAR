@@ -1,111 +1,89 @@
-const assert = require("assert");
-const ganache = require("ganache-cli");
-const Web3 = require("web3");
-const web3 = new Web3(ganache.provider());
-const {shouldThrow} = require('./utils/helper')
+const {
+  shouldThrow
+} = require('./utils/helper')
 
-const compiledFactory = require("../ethereum/build/CampaignFactory.json");
-const compiledCampaign = require("../ethereum/build/Campaign.json");
+const CampaignFactory = artifacts.require("CampaignFactory");
+const Campaign = artifacts.require("Campaign");
 
-let accounts;
-let factory;
-let campaignAddress;
-let campaign;
-
-beforeEach(async () => {
-  accounts = await web3.eth.getAccounts();
-
-  factory = await new web3.eth.Contract(JSON.parse(compiledFactory.interface))
-    .deploy({ data: compiledFactory.bytecode })
-    .send({ from: accounts[0], gas: "1000000" });
-
-  await factory.methods.createCampaign("100", "Libelle").send({
-    from: accounts[0],
-    gas: "1000000",
-  });
-
-  const {campaignAddress, libelle} = await factory.methods.deployedCampaigns(0).call();
-  campaign = await new web3.eth.Contract(
-    JSON.parse(compiledCampaign.interface),
-    campaignAddress
-  );
-});
-
-describe("Campaigns", () => {
-  it("deploys a factory and a campaign", () => {
-    assert.ok(factory.options.address);
-    assert.ok(campaign.options.address);
-  });
-
-  it("marks caller as the campaign manager", async () => {
-    const manager = await campaign.methods.manager().call();
-    assert.equal(accounts[0], manager);
-  });
-
-  it("should have a campaign libelle", async() => {
-    const libelle = await campaign.methods.libelle().call();
-    assert.equal(libelle, "Libelle");
-  });
-
-  it('should return campaign count ', async() => {
-    const count = await factory.methods.campaignsCount().call();
-    assert.equal(count, 1);
-  });
-
-  it("should return one campaign", async()=> {
-    let campaignReturned = await factory.methods.deployedCampaigns(0).call();
-    assert.ok(campaignReturned);
-  });
-
-  it("allows people to contribute money and marks them as approvers", async () => {
-    await campaign.methods.contribute().send({
-      value: "200",
-      from: accounts[1],
+contract("Campaign", (accounts) => {
+  const [alice, bob, paul] = accounts;
+  let campaignInstance;
+  let instanceCampaignFactory;
+  beforeEach(async () => {
+    instanceCampaignFactory = await CampaignFactory.new();
+    await instanceCampaignFactory.createCampaign('25000000000000000', 'Campaign to buy a car', {
+      from: alice
     });
-    const isContributor = await campaign.methods.approvers(accounts[1]).call();
+    const {
+      campaignAddress,
+      libelle
+    } = await instanceCampaignFactory.deployedCampaigns(0, {
+      from: alice
+    });
+    campaignInstance = await Campaign.new('25000000000000000', 'Campaign to buy a car', alice);
+  });
+  it('should deploy the campaign factory contract', async () => {
+    assert(instanceCampaignFactory, "Contract campaign factory has been deployed !");
+  })
+  it("should deploy the campaign contract", async () => {
+    assert(campaignInstance, "Contract campaign has been deployed")
+  })
+  // marks caller as the campaign manager
+  it("should mark caller as the campaign manager", async () => {
+    const manager = await campaignInstance.manager();
+    assert.equal(manager, alice);
+  })
+  // it should return campaign count 
+  it("should return campaign count", async () => {
+    const count = await instanceCampaignFactory.campaignsCount();
+    assert.equal(count, 1);
+  })
+  // it should return one campaign
+  it("should return one campaign", async () => {
+    const campaignReturned = await instanceCampaignFactory.deployedCampaigns(0);
+    assert.ok(campaignReturned);
+  })
+  it('should allows people to contribute money and marks them as approvers', async () => {
+    await campaignInstance.contribute({
+      from: alice,
+      value: web3.utils.toWei("1", "ether")
+    });
+    const isContributor = await campaignInstance.approvers(alice);
     assert(isContributor);
   });
-
-  it("requires a minimum contribution", async () => {
-    await shouldThrow(campaign.methods.contribute().send({from: accounts[1], value:"5"}))
-  });
-
-  it("allows a manager to make a payment request", async () => {
-    await campaign.methods
-      .createRequest("Buy batteries", "100", accounts[1])
-      .send({
-        from: accounts[0],
-        gas: "1000000",
-      });
-    const request = await campaign.methods.requests(0).call();
-
-    assert.equal("Buy batteries", request.description);
-  });
-
+  // it should require a minimum contribution
+  it("should require a minimum contribution", async () => {
+    await shouldThrow(campaignInstance.contribute({
+      from: alice,
+      value: "5"
+    }));
+  })
+  // should allow a manager to make a payment request
+  it("should allow a manager to make a payment request", async () => {
+    await campaignInstance.createRequest("Buy batteries", "1000000", alice, {
+      from: alice
+    });
+    const requests = await campaignInstance.requests(0);
+    assert.equal("Buy batteries", requests.description);
+  })
+  // it processes requests
   it("processes requests", async () => {
-    await campaign.methods.contribute().send({
-      from: accounts[0],
-      value: web3.utils.toWei("10", "ether"),
+    await campaignInstance.contribute({
+      from: alice,
+      value: web3.utils.toWei("10", "ether")
     });
-
-    await campaign.methods
-      .createRequest("A", web3.utils.toWei("5", "ether"), accounts[1])
-      .send({ from: accounts[0], gas: "1000000" });
-
-    await campaign.methods.approveRequest(0).send({
-      from: accounts[0],
-      gas: "1000000",
+    await campaignInstance.createRequest("A", web3.utils.toWei("5", "ether"), bob, {
+      from: alice
+    })
+    await campaignInstance.approveRequest(0, {
+      from: alice
     });
-
-    await campaign.methods.finalizeRequest(0).send({
-      from: accounts[0],
-      gas: "1000000",
+    await campaignInstance.finalizeRequest(0, {
+      from: alice
     });
-
-    let balance = await web3.eth.getBalance(accounts[1]);
+    let balance = await web3.eth.getBalance(bob);
     balance = web3.utils.fromWei(balance, "ether");
     balance = parseFloat(balance);
-    console.log(balance);
-    assert(balance > 104);
-  });
+    assert(balance >= 104.90);
+  })
 });
