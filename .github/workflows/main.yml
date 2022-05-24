@@ -36,4 +36,5 @@ jobs:
       if: github.event_name != 'pull_request'
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
-      run: npm run deploy --if-presentS
+      run: npm run deploy --if-present
+      working-directory: kickstart-front
