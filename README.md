@@ -1,3 +1,6 @@
+[![Test/Build Github Actions](https://github.com/CyrilCartoux/kickstarter_solidity_ANGULAR/actions/workflows/main.yml/badge.svg)](https://github.com/CyrilCartoux/kickstarter_solidity_ANGULAR/actions/workflows/main.yml)
+
+
 First run 
 npm install
 
