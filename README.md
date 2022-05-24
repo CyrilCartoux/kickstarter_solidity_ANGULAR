@@ -8,5 +8,4 @@ Inside ".env" file add following
 INFURA_KICKSTARTER_PROJECTID=*HERE_YOUR_INFURA_KICKSTARTER_PROJECT_ID*
 MNEMONIC_PHRASE=*HERE_YOUR_12_WORDS_MNEMONIC_PHRASE*
 
-To Start the application : npm run dev 
-and go to localhost:3000
+To Start the application : ng serve --o
