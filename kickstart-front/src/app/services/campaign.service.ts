@@ -196,8 +196,8 @@ export class CampaignService {
   private instantiateCampaignContract(address: string) {
     this.CampaignContract = Campaign(address);
   }
-  public isAnApprover(campaignAddress: string, userAddress: string): Promise<string> {
+  public isAnApprover(campaignAddress: string, userAddress: string): Observable<any> {
     this.instantiateCampaignContract(campaignAddress);
-    return this.CampaignContract.methods.approvers(userAddress).call()
+    return from<any>(this.CampaignContract.methods.approvers(userAddress).call());
   }
 }

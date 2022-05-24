@@ -1,4 +1,4 @@
-import { Subscription, Subject, Observable } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { Request } from './../../models/request';
 import { ActivatedRoute } from '@angular/router';
 import { CampaignService } from './../../services/campaign.service';
@@ -26,6 +26,7 @@ export class CampaignDetailRequestListComponent
   public approversCount!: number;
   public manager!: string;
   public connectedAccount!: string;
+  public isApprover = false;
   subscription: Subscription = new Subscription();
   address!: string;
   REQUEST_DATA: Request[] = [];
@@ -69,6 +70,7 @@ export class CampaignDetailRequestListComponent
     this.subscription.add(
       this.campaignService.getAccounts().subscribe((acc) => {
         this.connectedAccount = acc;
+        this.isAnApprover(this.connectedAccount);
       })
     );
   }
@@ -114,7 +116,13 @@ export class CampaignDetailRequestListComponent
     return +element.approvalCount > this.approversCount / 2;
   }
 
-  async isAnApprover(): Promise<string> {
-    return await this.campaignService.isAnApprover(this.address, this.connectedAccount);
+  isAnApprover(userAddress: string) {
+    this.subscription.add(
+      this.campaignService
+        .isAnApprover(this.address, userAddress)
+        .subscribe((result: boolean) => {
+          this.isApprover = result;
+        })
+    );
   }
 }

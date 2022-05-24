@@ -32,8 +32,10 @@
     <!-- // button Approve -->
     <ng-container matColumnDef="approve">
       <th mat-header-cell *matHeaderCellDef> Approve spending request </th>
-      <td mat-cell *matCellDef="let element;let i = index"> <button [disabled]="element.complete" mat-raised-button
-          (click)="onApprove(element, i)" color="accent">Approve</button> </td>
+      <td mat-cell *matCellDef="let element;let i = index">
+        <button *ngIf="isApprover" [disabled]="element.complete" mat-raised-button (click)="onApprove(element, i)" color="accent">Approve</button>
+        <button *ngIf="!isApprover" routerLink="/campaign/detail/{{address}}" mat-raised-button color="accent">Become an approver</button>
+      </td>
     </ng-container>
     <!-- // buton finalize -->
     <ng-container matColumnDef="finalize">
