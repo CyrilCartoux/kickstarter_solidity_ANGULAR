@@ -3,9 +3,9 @@ import { CampaignService } from './../services/campaign.service';
 // Components
 import { CampaignNewComponent } from './campaign-new/campaign-new.component';
 import { CampaignListComponent } from './campaign-list/campaign-list.component';
-import { CampaignDetailComponent } from './campaign-detail/campaign-detail.component';
-import { CampaignDetailRequestListComponent } from './campaign-detail-request-list/campaign-detail-request-list.component';
-import { CampaignDetailRequestNewComponent } from './campaign-detail-request-new/campaign-detail-request-new.component';
+import { CampaignDetailComponent } from './campaign-detail/detail.component';
+import { CampaignDetailRequestListComponent } from './detail-request-list/detail-request-list.component';
+import { CampaignDetailRequestNewComponent } from './detail-request-new/detail-request-new.component';
 import { ShowTxhashComponent } from './../show-txhash/show-txhash.component';
 // Modules
 import { RouterModule } from '@angular/router';

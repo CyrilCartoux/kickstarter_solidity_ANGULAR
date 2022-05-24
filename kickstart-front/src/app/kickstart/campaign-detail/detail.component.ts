@@ -6,8 +6,8 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-campaign-detail',
-  templateUrl: './campaign-detail.component.html',
-  styleUrls: ['./campaign-detail.component.less'],
+  templateUrl: './detail.component.html',
+  styleUrls: ['./detail.component.less'],
 })
 export class CampaignDetailComponent implements OnInit, OnDestroy {
   address!: string;

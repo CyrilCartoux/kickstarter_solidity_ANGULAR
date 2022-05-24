@@ -105,6 +105,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "baseHref": "/kickstarter_solidity_ANGULAR/",
+            "name": "CyrilCartoux",
+            "email": "6ssou@protonmail.com",
+            "noSilent": true,
+            "dryRun": false
+          }
         }
       }
     }

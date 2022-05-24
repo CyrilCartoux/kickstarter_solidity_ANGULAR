@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CampaignListComponent } from './campaign-list/campaign-list.component';
 import { CampaignNewComponent } from './campaign-new/campaign-new.component';
-import { CampaignDetailComponent } from './campaign-detail/campaign-detail.component';
-import { CampaignDetailRequestNewComponent } from './campaign-detail-request-new/campaign-detail-request-new.component';
-import { CampaignDetailRequestListComponent } from './campaign-detail-request-list/campaign-detail-request-list.component';
+import { CampaignDetailComponent } from './campaign-detail/detail.component';
+import { CampaignDetailRequestNewComponent } from './detail-request-new/detail-request-new.component';
+import { CampaignDetailRequestListComponent } from './detail-request-list/detail-request-list.component';
 
 const routes: Routes = [
   {

@@ -1,13 +1,13 @@
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { CampaignService } from './../../services/campaign.service';
+import { CampaignService } from '../../services/campaign.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-campaign-detail-request-new',
-  templateUrl: './campaign-detail-request-new.component.html',
-  styleUrls: ['./campaign-detail-request-new.component.less'],
+  templateUrl: './detail-request-new.component.html',
+  styleUrls: ['./detail-request-new.component.less'],
 })
 export class CampaignDetailRequestNewComponent implements OnInit, OnDestroy {
   requestForm!: FormGroup;

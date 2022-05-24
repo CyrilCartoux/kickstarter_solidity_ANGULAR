@@ -1,7 +1,7 @@
 import { Subscription, Subject } from 'rxjs';
-import { Request } from './../../models/request';
+import { Request } from '../../models/request';
 import { ActivatedRoute } from '@angular/router';
-import { CampaignService } from './../../services/campaign.service';
+import { CampaignService } from '../../services/campaign.service';
 import {
   AfterViewInit,
   Component,
@@ -16,8 +16,8 @@ import Web3 from 'web3';
 
 @Component({
   selector: 'app-campaign-detail-request-list',
-  templateUrl: './campaign-detail-request-list.component.html',
-  styleUrls: ['./campaign-detail-request-list.component.less'],
+  templateUrl: './detail-request-list.component.html',
+  styleUrls: ['./detail-request-list.component.less'],
 })
 export class CampaignDetailRequestListComponent
   implements OnInit, AfterViewInit, OnDestroy
