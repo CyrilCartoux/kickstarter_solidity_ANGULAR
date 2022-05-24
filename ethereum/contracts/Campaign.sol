@@ -41,7 +41,7 @@ contract Campaign {
         _;
     }
 
-    function Campaign(uint minimum,string memory lib, address creator) public {
+    constructor(uint minimum,string memory lib, address creator) public {
         manager = creator;
         minimumContribution = minimum;
         libelle = lib;
@@ -97,7 +97,7 @@ contract Campaign {
         return (
             libelle,
             minimumContribution, 
-            this.balance,
+            address(this).balance,
             requests.length,
             approversCount,
             manager

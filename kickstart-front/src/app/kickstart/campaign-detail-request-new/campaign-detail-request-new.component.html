@@ -1,0 +1,19 @@
+<app-show-txhash></app-show-txhash>
+<form [formGroup]="requestForm" class="example-form" (ngSubmit)="onSendRequest()">
+  <div class="new-request-block">
+    <h1>Create a spending request</h1>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Amount to spend</mat-label>
+      <input formControlName="value" matInput placeholder="Ex. 0.05 ether">
+    </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Description</mat-label>
+      <input formControlName="description" matInput placeholder="Buy Batteries">
+    </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Recipient</mat-label>
+      <input formControlName="recipient" matInput placeholder="Ex. 0x02FS...65esF">
+    </mat-form-field>
+    <button type="submit" mat-raised-button color="primary">Send</button>
+  </div>
+</form>

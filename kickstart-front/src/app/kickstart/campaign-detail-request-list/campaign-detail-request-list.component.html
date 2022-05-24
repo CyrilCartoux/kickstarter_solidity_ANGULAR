@@ -1,0 +1,59 @@
+<app-show-txhash></app-show-txhash>
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="index">
+      <th mat-header-cell *matHeaderCellDef> Id. </th>
+      <td mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </td>
+    </ng-container>
+    <!-- Name Column -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef> Description </th>
+      <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="value">
+      <th mat-header-cell *matHeaderCellDef> Value </th>
+      <td mat-cell *matCellDef="let element"> {{web3js.utils.fromWei(element.value)}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="recipient">
+      <th mat-header-cell *matHeaderCellDef> Recipient </th>
+      <td mat-cell *matCellDef="let element"> {{element.recipient}} </td>
+    </ng-container>
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="approvalCount">
+      <th mat-header-cell *matHeaderCellDef> Approval count </th>
+      <td mat-cell *matCellDef="let element"> {{element.approvalCount}} / {{approversCount}} </td>
+    </ng-container>
+    <!-- // button Approve -->
+    <ng-container matColumnDef="approve">
+      <th mat-header-cell *matHeaderCellDef> Approve spending request </th>
+      <td mat-cell *matCellDef="let element;let i = index">
+        <button *ngIf="isApprover" [disabled]="element.complete" mat-raised-button (click)="onApprove(element, i)" color="accent">Approve</button>
+        <button *ngIf="!isApprover" routerLink="/campaign/detail/{{address}}" mat-raised-button color="accent">Become an approver</button>
+      </td>
+    </ng-container>
+    <!-- // buton finalize -->
+    <ng-container matColumnDef="finalize">
+      <th mat-header-cell *matHeaderCellDef> Finalize spending request </th>
+      <td mat-cell *matCellDef="let element; let i = index"> <button *ngIf="connectedAccount == manager"
+          [disabled]="(!hasEnoughApprovals(element)|| element.complete)" (click)="onFinalize(element, i)"
+          mat-raised-button color="primary">Finalize</button> </td>
+    </ng-container>
+
+    <ng-container matColumnDef="complete">
+      <th mat-header-cell *matHeaderCellDef> Complete </th>
+      <td mat-cell *matCellDef="let element; let i = index"><span *ngIf="element.complete" id="checkmark"></span></td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of requests">
+  </mat-paginator>
+</div>
