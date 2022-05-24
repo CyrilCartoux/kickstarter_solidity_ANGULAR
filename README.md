@@ -1,4 +1,4 @@
-[![pages-build-deployment](https://github.com/CyrilCartoux/c/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/CyrilCartoux/kickstarter_solidity_ANGULAR/actions/workflows/pages/pages-build-deployment)
+[![pages-build-deployment](https://github.com/CyrilCartoux/kickstarter_solidity_ANGULAR/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/CyrilCartoux/kickstarter_solidity_ANGULAR/actions/workflows/pages/pages-build-deployment)
 
 [![Test/Build Github Actions](https://github.com/CyrilCartoux/kickstarter_solidity_ANGULAR/actions/workflows/main.yml/badge.svg)](https://github.com/CyrilCartoux/kickstarter_solidity_ANGULAR/actions/workflows/main.yml)
 
