@@ -7,5 +7,6 @@
       <span>{{connectedAccount}}</span>
       <span *ngIf="balance"> {{balance}} ether</span>
     </div>
+    <button *ngIf="!connectedAccount" (click)="onConnectToMetamask()" mat-raised-button color="accent">Connect your wallet</button>
   </div>
 </mat-toolbar>

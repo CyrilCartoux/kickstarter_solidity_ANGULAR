@@ -1,6 +1,7 @@
 import { Subscription } from 'rxjs';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { Component, OnInit } from '@angular/core';
+import { connectAccount } from '../services/web3-instance';
 
 @Component({
   selector: 'app-header',
@@ -16,12 +17,17 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.subscription.add(
       this.campaignService.getAccounts().subscribe((acc) => {
-        this.connectedAccount = acc.slice(0,6).concat('...').concat(acc.slice(-5));
-        this.campaignService
-          .getBalanceOfAddress(acc)
-          .subscribe((bal) => (this.balance = bal.slice(0,6)));
+        if(acc) {
+          this.connectedAccount = acc.slice(0,6).concat('...').concat(acc.slice(-5));
+          this.campaignService
+            .getBalanceOfAddress(acc)
+            .subscribe((bal) => (this.balance = bal.slice(0,6)));
+        }
       })
     );
+  }
+  onConnectToMetamask() {
+    connectAccount();
   }
 
 }

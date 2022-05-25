@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import web3 from 'src/app/services/web3-instance';
+import {web3} from 'src/app/services/web3-instance';
 import Web3 from 'web3';
 
 @Component({

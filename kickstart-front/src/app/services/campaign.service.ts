@@ -1,6 +1,6 @@
+import { web3 } from 'src/app/services/web3-instance';
 import { CampaignList } from './../models/campaign-list';
 import { Injectable } from '@angular/core';
-import web3 from './web3-instance';
 import CampaignFactoryContract from './campaign-factory';
 import Campaign from './campaign';
 import {

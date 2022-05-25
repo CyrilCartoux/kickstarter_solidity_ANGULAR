@@ -1,3 +1,4 @@
+import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -12,7 +13,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, PageNotFoundComponent],
-  imports: [BrowserModule,BrowserAnimationsModule, AppRoutingModule, MatToolbarModule, MatIconModule],
+  imports: [BrowserModule,BrowserAnimationsModule, AppRoutingModule, MatToolbarModule, MatIconModule,MatButtonModule],
   providers: [],
   bootstrap: [AppComponent],
 })

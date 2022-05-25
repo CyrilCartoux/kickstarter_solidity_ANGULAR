@@ -1,4 +1,4 @@
-import web3 from './web3-instance';
+import {web3} from './web3-instance';
 import Campaign from '../../contracts/Campaign.json';
 
 export default (address: string) => {
