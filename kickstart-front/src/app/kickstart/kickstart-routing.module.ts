@@ -1,3 +1,4 @@
+import { AuthGuard } from '../guard/auth.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CampaignListComponent } from './campaign-list/campaign-list.component';
@@ -14,6 +15,7 @@ const routes: Routes = [
   {
     path: 'new',
     component: CampaignNewComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'detail/:address',
@@ -22,6 +24,7 @@ const routes: Routes = [
       { path: 'requests', component: CampaignDetailRequestListComponent },
       { path: 'requests/new', component: CampaignDetailRequestNewComponent },
     ],
+    canActivate: [AuthGuard]
   },
 ];
 
