@@ -28,7 +28,7 @@ if (
 } else {
   // We are on the server *OR* the user is not running metamask
   const provider = new Web3.providers.HttpProvider(
-    `https://rinkeby.infura.io/v3/${environment.infura_project_id}`
+    `https://rinkeby.infura.io/v3/1203ff373fd94c31bd14adcd7962c938`
   );
   web3 = new Web3(provider);
 }
