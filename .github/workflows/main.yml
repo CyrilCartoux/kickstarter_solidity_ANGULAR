@@ -32,6 +32,9 @@ jobs:
     - name: Test
       run: truffle test
       working-directory: ethereum
+    - name: Setup angular
+      run: npm ci
+      working-directory: kickstart-front
     - name: All things angular
       uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.3.2
       with:
