@@ -1,0 +1,38 @@
+name: KickstarterApp-deploy
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      working-directory: kickstart-front
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: package-lock.json
+    - name: Setup angular
+      run: npm ci
+      working-directory: kickstart-front
+    - name: Angular Deploy gh-pages Actions
+      uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.3.2
+      with:
+        angular_project_dir: kickstart-front
+        github_access_token: ${{ secrets.ACCESS_TOKEN }}
+        build_configuration: production 
+        base_href: /kickstarter_solidity_ANGULAR/  
+        deploy_branch: gh-pages 
+        angular_dist_build_folder: kickstart-front/dist/kickstart-front 
