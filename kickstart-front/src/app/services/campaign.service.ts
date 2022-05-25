@@ -196,6 +196,9 @@ export class CampaignService {
   private instantiateCampaignContract(address: string) {
     this.CampaignContract = Campaign(address);
   }
+  public getBalanceOfAddress(address: string):Observable<string> {
+    return from<string>(this.web3js.eth.getBalance(address)).pipe(map(bal => {return this.web3js.utils.fromWei(bal)}));
+  }
   public isAnApprover(campaignAddress: string, userAddress: string): Observable<any> {
     this.instantiateCampaignContract(campaignAddress);
     return from<any>(this.CampaignContract.methods.approvers(userAddress).call());

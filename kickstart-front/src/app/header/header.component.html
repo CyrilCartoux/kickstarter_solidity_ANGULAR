@@ -1,3 +1,11 @@
 <mat-toolbar color="primary">
-  <span routerLink="/">Kickstarter</span>
+  <span class="cliquable" routerLink="/">Kickstarter</span>
+  <span class="spacer"></span>
+  <div class="text-end">
+    <div *ngIf="connectedAccount"
+      style="display: flex; flex-direction: column;align-items: flex-start;">
+      <span>{{connectedAccount}}</span>
+      <span *ngIf="balance"> {{balance}} ether</span>
+    </div>
+  </div>
 </mat-toolbar>
