@@ -35,10 +35,10 @@ jobs:
     - name: Setup angular
       run: npm ci
       working-directory: kickstart-front
-    - name: All things angular
-      working-directory: kickstart-front
+    - name: Angular Deploy gh-pages Actions
       uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.3.2
       with:
+        angular_project_dir: kickstart-front
         github_access_token: ${{ secrets.ACCESS_TOKEN }} # see the Configuration section for how you can create secrets
         build_configuration: production # The build environment for the app. please look configurations in your angular.json
         base_href: /kickstarter_solidity_ANGULAR/   # make sure this corresponds to https://<your_username>.github.io/<base_href>/
