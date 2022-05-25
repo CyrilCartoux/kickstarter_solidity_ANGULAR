@@ -37,6 +37,8 @@ jobs:
       working-directory: kickstart-front
     - name: Angular Deploy gh-pages Actions
       uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.3.2
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
       with:
         angular_project_dir: kickstart-front
         github_access_token: ${{ secrets.ACCESS_TOKEN }} # see the Configuration section for how you can create secrets
