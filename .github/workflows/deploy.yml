@@ -30,7 +30,7 @@ jobs:
       uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.3.2
       with:
         angular_project_dir: kickstart-front
-        github_access_token: ${{ secrets.ACCESS_TOKEN }}
+        github_access_token: ${{ secrets.GH_TOKEN }}
         build_configuration: production 
         base_href: /kickstarter_solidity_ANGULAR/  
         deploy_branch: gh-pages 
