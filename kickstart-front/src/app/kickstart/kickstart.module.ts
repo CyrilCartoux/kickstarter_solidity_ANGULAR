@@ -17,13 +17,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import {MatPaginatorModule} from "@angular/material/paginator";
-import {MatTableModule} from '@angular/material/table';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
-  declarations: [CampaignListComponent, CampaignNewComponent, CampaignDetailComponent, CampaignDetailRequestListComponent, CampaignDetailRequestNewComponent, ShowTxhashComponent],
+  declarations: [
+    CampaignListComponent,
+    CampaignNewComponent,
+    CampaignDetailComponent,
+    CampaignDetailRequestListComponent,
+    CampaignDetailRequestNewComponent,
+    ShowTxhashComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -36,7 +42,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MatCardModule,
     MatTableModule,
     MatPaginatorModule,
-    MatProgressBarModule
+    MatProgressBarModule,
   ],
   providers: [CampaignService],
 })

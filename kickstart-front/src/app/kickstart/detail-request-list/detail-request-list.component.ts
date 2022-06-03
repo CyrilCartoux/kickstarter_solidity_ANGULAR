@@ -1,4 +1,4 @@
-import { Subscription, Subject } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Request } from '../../models/request';
 import { ActivatedRoute } from '@angular/router';
 import { CampaignService } from '../../services/campaign.service';
@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import {web3} from 'src/app/services/web3-instance';
+import { web3 } from 'src/app/services/web3-instance';
 import Web3 from 'web3';
 
 @Component({
@@ -50,7 +50,9 @@ export class CampaignDetailRequestListComponent
   ) {}
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    if(this.dataSource) {
+      this.dataSource.paginator = this.paginator;
+    }
   }
 
   ngOnInit(): void {
@@ -60,11 +62,11 @@ export class CampaignDetailRequestListComponent
         this.web3js = web3;
         this.getApproversCount();
         this.getRequests();
-      })
-    );
-    this.subscription.add(
-      this.campaignService.getManager(this.address).subscribe((account) => {
-        this.manager = account;
+        this.subscription.add(
+          this.campaignService.getManager(this.address).subscribe((account) => {
+            this.manager = account;
+          })
+        );
       })
     );
     this.subscription.add(
