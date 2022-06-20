@@ -72,20 +72,6 @@ export class CampaignService {
    * @returns CampaignList[]
    */
   public getDeployedCampaigns(): Observable<any> {
-    // const campaignsCount = await this.CampaignFactoryContract.methods
-    //   .getDeployedCampaignsCount()
-    //   .call();
-    // const campaigns = await Promise.all(
-    //   Array(parseInt(campaignsCount))
-    //     .fill(campaignsCount)
-    //     .map((element, index) => {
-    //       return this.CampaignFactoryContract.methods
-    //         .deployedCampaigns(index)
-    //         .call();
-    //     })
-    // );
-    // return campaigns;
-
     let result$ = from(
       this.CampaignFactoryContract.methods.getDeployedCampaignsCount().call()
     ).pipe(
