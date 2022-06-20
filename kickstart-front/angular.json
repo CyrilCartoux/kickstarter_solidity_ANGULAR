@@ -115,9 +115,21 @@
             "noSilent": true,
             "dryRun": false
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "kickstart-front"
+  "defaultProject": "kickstart-front",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }
