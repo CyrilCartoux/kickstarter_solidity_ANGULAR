@@ -1,6 +1,6 @@
 <app-show-txhash></app-show-txhash>
 <div class="main">
-  <div *ngIf="campaignDetail" class="grid-view">
+  <div *ngIf="campaignDetail$ | async as campaignDetail" class="grid-view">
     <mat-card>
       <mat-card-title>{{campaignDetail.libelle}}</mat-card-title>
       <mat-card-subtitle>Managed by. {{campaignDetail.manager}}</mat-card-subtitle>
@@ -55,7 +55,8 @@
       <mat-label>Amount to contribute</mat-label>
       <input [(ngModel)]="amountToContribute" matInput placeholder="Ex. 0.05 ether">
     </mat-form-field>
-    <button [disabled]="!amountToContribute" (click)="onContribute()" mat-raised-button color="primary">Contribute</button>
+    <button [disabled]="!amountToContribute" (click)="onContribute()" mat-raised-button
+      color="primary">Contribute</button>
   </div>
 
   <router-outlet></router-outlet>

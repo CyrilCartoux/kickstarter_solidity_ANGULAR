@@ -1,3 +1,4 @@
+import { Request } from './../models/request';
 import { web3 } from 'src/app/services/web3-instance';
 import { CampaignList } from './../models/campaign-list';
 import { Injectable } from '@angular/core';
@@ -139,7 +140,7 @@ export class CampaignService {
       map((count: any) => Array(parseInt(count)).fill(null)),
       switchMap((count: any[]) => {
         return forkJoin(
-          count.map((c, i) => this.CampaignContract.methods.requests(i).call())
+          (count.map((c, i) => this.CampaignContract.methods.requests(i).call()) as unknown as Request[])
         );
       })
     );
