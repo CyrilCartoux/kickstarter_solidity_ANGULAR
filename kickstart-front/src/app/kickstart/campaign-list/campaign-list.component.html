@@ -1,7 +1,7 @@
 <div class="main">
   <button routerLink="/campaign/new" mat-raised-button color="primary">Create</button>
 
-  <div *ngIf="campaignsList && campaignsList.length > 0" class="grid-view">
+  <div *ngIf="deployedCampaigns$ | async as campaignsList" class="grid-view">
     <mat-card class="example-card" *ngFor="let campaign of campaignsList">
       <mat-card-title>{{campaign.libelle}}</mat-card-title>
       <mat-card-subtitle>{{campaign.campaignAddress}}</mat-card-subtitle>

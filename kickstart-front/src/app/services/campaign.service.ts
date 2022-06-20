@@ -7,9 +7,12 @@ import {
   BehaviorSubject,
   from,
   map,
+  tap,
   Observable,
   ObservableInput,
   Subject,
+  switchMap,
+  forkJoin,
 } from 'rxjs';
 
 @Injectable({
@@ -68,20 +71,34 @@ export class CampaignService {
    * Returns a list of deployed campaigns
    * @returns CampaignList[]
    */
-  public async getDeployedCampaigns(): Promise<CampaignList[]> {
-    const campaignsCount = await this.CampaignFactoryContract.methods
-      .getDeployedCampaignsCount()
-      .call();
-    const campaigns = await Promise.all(
-      Array(parseInt(campaignsCount))
-        .fill(campaignsCount)
-        .map((element, index) => {
-          return this.CampaignFactoryContract.methods
-            .deployedCampaigns(index)
-            .call();
-        })
+  public getDeployedCampaigns(): Observable<any> {
+    // const campaignsCount = await this.CampaignFactoryContract.methods
+    //   .getDeployedCampaignsCount()
+    //   .call();
+    // const campaigns = await Promise.all(
+    //   Array(parseInt(campaignsCount))
+    //     .fill(campaignsCount)
+    //     .map((element, index) => {
+    //       return this.CampaignFactoryContract.methods
+    //         .deployedCampaigns(index)
+    //         .call();
+    //     })
+    // );
+    // return campaigns;
+
+    let result$ = from(
+      this.CampaignFactoryContract.methods.getDeployedCampaignsCount().call()
+    ).pipe(
+      map((count: any) => Array(parseInt(count)).fill(null)),
+      switchMap((count: any[]) => {
+        return forkJoin(
+          count.map((c, i) =>
+            this.CampaignFactoryContract.methods.deployedCampaigns(i).call()
+          )
+        );
+      })
     );
-    return campaigns;
+    return result$;
   }
 
   public getSummary(address: string): Observable<any> {
@@ -196,11 +213,20 @@ export class CampaignService {
   private instantiateCampaignContract(address: string) {
     this.CampaignContract = Campaign(address);
   }
-  public getBalanceOfAddress(address: string):Observable<string> {
-    return from<string>(this.web3js.eth.getBalance(address)).pipe(map(bal => {return this.web3js.utils.fromWei(bal)}));
+  public getBalanceOfAddress(address: string): Observable<string> {
+    return from<string>(this.web3js.eth.getBalance(address)).pipe(
+      map((bal) => {
+        return this.web3js.utils.fromWei(bal);
+      })
+    );
   }
-  public isAnApprover(campaignAddress: string, userAddress: string): Observable<any> {
+  public isAnApprover(
+    campaignAddress: string,
+    userAddress: string
+  ): Observable<any> {
     this.instantiateCampaignContract(campaignAddress);
-    return from<any>(this.CampaignContract.methods.approvers(userAddress).call());
+    return from<any>(
+      this.CampaignContract.methods.approvers(userAddress).call()
+    );
   }
 }
