@@ -117,9 +117,9 @@ export class CampaignService {
     );
   }
 
-  public getRequestsCount(address: string): Observable<string> {
+  public getRequestsCount(address: string): Observable<any> {
     this.instantiateCampaignContract(address);
-    return from<string>(
+    return from<any>(
       this.CampaignContract.methods
         .getRequestsCount()
         .call({ from: this.account })
@@ -135,19 +135,14 @@ export class CampaignService {
   }
 
   public getRequests(address: string): Observable<Request[]> {
-    let requests = null;
-    let subject = new Subject<Request[]>();
-    this.getRequestsCount(address).subscribe(async (count) => {
-      requests = await Promise.all(
-        Array(parseInt(count))
-          .fill(count)
-          .map((element, index) => {
-            return this.CampaignContract.methods.requests(index).call();
-          })
-      );
-      subject.next(requests);
-    });
-    return subject.asObservable();
+    return this.getRequestsCount(address).pipe(
+      map((count: any) => Array(parseInt(count)).fill(null)),
+      switchMap((count: any[]) => {
+        return forkJoin(
+          count.map((c, i) => this.CampaignContract.methods.requests(i).call())
+        );
+      })
+    );
   }
 
   public createRequest(
