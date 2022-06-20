@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-          cache-dependency-path: ethereum/package-lock.json
+          cache-dependency-path: package-lock.json
       - name: Setup
         run: npm ci
         working-directory: ethereum
