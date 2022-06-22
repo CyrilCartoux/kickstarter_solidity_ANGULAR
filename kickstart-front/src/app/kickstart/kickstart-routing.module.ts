@@ -7,7 +7,7 @@ import { CampaignDetailComponent } from './campaign-detail/detail.component';
 import { CampaignDetailRequestNewComponent } from './detail-request-new/detail-request-new.component';
 import { CampaignDetailRequestListComponent } from './detail-request-list/detail-request-list.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '',
     component: CampaignListComponent,
@@ -20,7 +20,7 @@ const routes: Routes = [
   {
     path: 'detail/:address',
     children: [
-      {path: '', component: CampaignDetailComponent},
+      { path: '', component: CampaignDetailComponent },
       { path: 'requests', component: CampaignDetailRequestListComponent },
       { path: 'requests/new', component: CampaignDetailRequestNewComponent },
     ],
@@ -32,4 +32,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class KickstartRoutingModule {}
+export class KickstartRoutingModule { }
