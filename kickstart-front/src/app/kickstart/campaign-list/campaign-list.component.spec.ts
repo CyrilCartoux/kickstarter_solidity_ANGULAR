@@ -1,3 +1,4 @@
+import { CampaignService } from 'src/app/services/campaign.service';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CampaignListComponent } from './campaign-list.component';
@@ -8,12 +9,16 @@ describe('CampaignListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CampaignListComponent ]
+      declarations: [CampaignListComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [CampaignListComponent],
+      providers: [CampaignService]
+    }).compileComponents();
     fixture = TestBed.createComponent(CampaignListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
