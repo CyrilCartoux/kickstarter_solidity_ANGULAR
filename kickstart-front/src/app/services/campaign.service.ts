@@ -1,6 +1,5 @@
 import { Request } from './../models/request';
 import { web3 } from 'src/app/services/web3-instance';
-import { CampaignList } from './../models/campaign-list';
 import { Injectable } from '@angular/core';
 import CampaignFactoryContract from './campaign-factory';
 import Campaign from './campaign';
@@ -8,10 +7,8 @@ import {
   BehaviorSubject,
   from,
   map,
-  tap,
   Observable,
   ObservableInput,
-  Subject,
   switchMap,
   forkJoin,
 } from 'rxjs';
