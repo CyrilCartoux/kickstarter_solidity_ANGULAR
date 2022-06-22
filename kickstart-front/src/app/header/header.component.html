@@ -2,11 +2,11 @@
   <span class="cliquable" routerLink="/">Kickstarter</span>
   <span class="spacer"></span>
   <div class="text-end">
-    <div *ngIf="connectedAccount"
-      style="display: flex; flex-direction: column;align-items: flex-start;">
-      <span>{{connectedAccount}}</span>
-      <span *ngIf="balance"> {{balance}} ether</span>
+    <div *ngIf="connectedAccount" style="display: flex; flex-direction: column;align-items: flex-start;">
+      <span id="account">{{connectedAccount}}</span>
+      <span id="balance" *ngIf="balance"> {{balance}} ether</span>
     </div>
-    <button *ngIf="!connectedAccount" (click)="onConnectToMetamask()" mat-raised-button color="accent">Connect your wallet</button>
+    <button *ngIf="!connectedAccount" (click)="onConnectToMetamask()" mat-raised-button color="accent">Connect your
+      wallet</button>
   </div>
 </mat-toolbar>

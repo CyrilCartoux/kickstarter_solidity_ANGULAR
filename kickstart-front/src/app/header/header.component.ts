@@ -10,18 +10,18 @@ import { connectAccount } from '../services/web3-instance';
 })
 export class HeaderComponent implements OnInit {
   subscription: Subscription = new Subscription();
-  connectedAccount!: string;
+  connectedAccount: string | undefined;
   balance!: string;
-  constructor(private campaignService: CampaignService) {}
+  constructor(private campaignService: CampaignService) { }
 
   ngOnInit(): void {
     this.subscription.add(
       this.campaignService.getAccounts().subscribe((acc) => {
-        if(acc) {
-          this.connectedAccount = acc.slice(0,6).concat('...').concat(acc.slice(-5));
+        if (acc) {
+          this.connectedAccount = acc.slice(0, 6).concat('...').concat(acc.slice(-5));
           this.campaignService
             .getBalanceOfAddress(acc)
-            .subscribe((bal) => (this.balance = bal.slice(0,6)));
+            .subscribe((bal) => (this.balance = bal.slice(0, 6)));
         }
       })
     );
