@@ -76,9 +76,9 @@ export class CampaignService {
       map((count: any) => Array(parseInt(count)).fill(null)),
       switchMap((count: any[]) => {
         return forkJoin(
-          count.map((c, i) =>
+          [count.map((c, i) =>
             this.CampaignFactoryContract.methods.deployedCampaigns(i).call()
-          )
+          ) as unknown as string[]]
         );
       })
     );
@@ -137,7 +137,7 @@ export class CampaignService {
       map((count: any) => Array(parseInt(count)).fill(null)),
       switchMap((count: any[]) => {
         return forkJoin(
-          (count.map((c, i) => this.CampaignContract.methods.requests(i).call()) as unknown as Request[])
+          [(count.map((c, i) => this.CampaignContract.methods.requests(i).call()) as unknown as Request[])]
         );
       })
     );
