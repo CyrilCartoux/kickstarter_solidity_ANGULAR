@@ -1,3 +1,4 @@
+import { CampaignList } from './../models/campaign-list';
 import { Request } from './../models/request';
 import { web3 } from 'src/app/services/web3-instance';
 import { Injectable } from '@angular/core';
@@ -69,16 +70,16 @@ export class CampaignService {
    * Returns a list of deployed campaigns
    * @returns CampaignList[]
    */
-  public getDeployedCampaigns(): Observable<any> {
+  public getDeployedCampaigns(): Observable<CampaignList[]> {
     let result$ = from(
       this.CampaignFactoryContract.methods.getDeployedCampaignsCount().call()
     ).pipe(
       map((count: any) => Array(parseInt(count)).fill(null)),
       switchMap((count: any[]) => {
         return forkJoin(
-          [count.map((c, i) =>
+          count.map((c, i) =>
             this.CampaignFactoryContract.methods.deployedCampaigns(i).call()
-          ) as unknown as string[]]
+          ) as unknown as CampaignList[]
         );
       })
     );
