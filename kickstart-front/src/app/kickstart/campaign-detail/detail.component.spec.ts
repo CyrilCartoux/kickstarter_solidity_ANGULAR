@@ -50,4 +50,19 @@ describe('CampaignDetailComponent', () => {
     expect(component.address).toBeTruthy();
     expect(spy).toHaveBeenCalled();
   }));
+  it("should display 5 mat-card", fakeAsync(() => {
+    const spy = spyOn(campaignService, 'getSummary').and.returnValue(of({
+      libelle: "test",
+      minimumContribution: 150000000000,
+      balance: 150000000000,
+      requests: {},
+      approversCount: 4,
+      manager: "0x123",
+    }));
+    component.ngOnInit()
+    fixture.detectChanges()
+    let element: HTMLElement = fixture.nativeElement;
+    const cards = element.querySelectorAll("mat-card");
+    expect(cards.length).toBe(5);
+  }));
 });
