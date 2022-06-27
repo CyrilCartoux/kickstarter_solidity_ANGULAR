@@ -1,26 +1,53 @@
+import { ShowTxhashComponent } from './../../show-txhash/show-txhash.component';
+import { MatCardModule } from '@angular/material/card';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { CampaignDetailComponent } from './detail.component';
+import { CampaignService } from 'src/app/services/campaign.service';
+import { ActivatedRoute } from '@angular/router';
+
+import { from, of } from "rxjs";
 
 describe('CampaignDetailComponent', () => {
   let component: CampaignDetailComponent;
   let fixture: ComponentFixture<CampaignDetailComponent>;
+  let route: ActivatedRoute;
+  let campaignService: CampaignService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CampaignDetailComponent],
-      imports: [RouterTestingModule],
+      declarations: [CampaignDetailComponent, ShowTxhashComponent],
+      imports: [RouterTestingModule, MatCardModule], providers: [CampaignService, {
+        provide: ActivatedRoute, useValue: {
+          params: of({ address: '0x123' })
+        }
+      }]
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CampaignDetailComponent);
     component = fixture.componentInstance;
+    campaignService = TestBed.inject(CampaignService);
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('should get the address in the url and call campaignDetail', fakeAsync(() => {
+    const spy = spyOn(campaignService, 'getSummary').and.returnValue(of({
+      libelle: "test",
+      minimumContribution: 150000000000,
+      balance: 150000000000,
+      requests: {},
+      approversCount: 4,
+      manager: "0x123",
+    }));
+    component.ngOnInit()
+    fixture.detectChanges()
+    expect(component.address).toBeTruthy();
+    expect(spy).toHaveBeenCalled();
+  }));
 });
