@@ -1,9 +1,12 @@
+import { routes } from './../kickstart/kickstart-routing.module';
+import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CampaignService } from './../services/campaign.service';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HeaderComponent } from './header.component';
-import { ElementRef } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ElementRef } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -11,7 +14,7 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HeaderComponent], imports: [MatToolbarModule]
+      declarations: [HeaderComponent], schemas: [CUSTOM_ELEMENTS_SCHEMA],imports: [RouterTestingModule.withRoutes(routes)]
     })
       .compileComponents();
   });

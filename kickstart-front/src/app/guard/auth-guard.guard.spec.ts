@@ -40,7 +40,7 @@ describe('AuthGuardGuard', () => {
   describe("using fakeErrorService", () => {
 
     beforeEach(() => {
-      TestBed.configureTestingModule({ imports: [RouterTestingModule], providers: [{ provide: CampaignService, useValue: errorService }] });
+      TestBed.configureTestingModule({ imports: [RouterTestingModule.withRoutes(routes)], providers: [{ provide: CampaignService, useValue: errorService }] });
       guard = TestBed.inject(AuthGuard);
       router = TestBed.inject(Router);
       location = TestBed.inject(Location);

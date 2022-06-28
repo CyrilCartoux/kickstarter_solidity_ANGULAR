@@ -1,8 +1,10 @@
+import { routes } from './../kickstart-routing.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CampaignDetailRequestNewComponent } from './detail-request-new.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('CampaignDetailRequestNewComponent', () => {
   let component: CampaignDetailRequestNewComponent;
@@ -11,7 +13,8 @@ describe('CampaignDetailRequestNewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ CampaignDetailRequestNewComponent ],
-      imports: [ReactiveFormsModule, RouterTestingModule]
+      imports: [ReactiveFormsModule, RouterTestingModule.withRoutes(routes)],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   });

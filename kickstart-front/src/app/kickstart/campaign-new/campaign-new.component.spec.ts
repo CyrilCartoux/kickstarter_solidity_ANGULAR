@@ -1,3 +1,6 @@
+import { FormsModule } from '@angular/forms';
+
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CampaignNewComponent } from './campaign-new.component';
@@ -8,7 +11,7 @@ describe('CampaignNewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CampaignNewComponent ]
+      declarations: [ CampaignNewComponent ],schemas: [CUSTOM_ELEMENTS_SCHEMA], imports: [FormsModule]
     })
     .compileComponents();
   });

@@ -1,3 +1,6 @@
+import { MatTableModule } from '@angular/material/table';
+import { routes } from './../kickstart-routing.module';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CampaignDetailRequestListComponent } from './detail-request-list.component';
@@ -9,7 +12,7 @@ describe('CampaignDetailRequestListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ CampaignDetailRequestListComponent ],
-      imports: [RouterTestingModule]
+      imports: [RouterTestingModule.withRoutes(routes), MatTableModule ],schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   });

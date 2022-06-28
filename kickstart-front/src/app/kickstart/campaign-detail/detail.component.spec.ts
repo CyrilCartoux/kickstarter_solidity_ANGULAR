@@ -1,3 +1,5 @@
+import { routes } from './../kickstart-routing.module';
+import { FormsModule } from '@angular/forms';
 import { ShowTxhashComponent } from './../../show-txhash/show-txhash.component';
 import { MatCardModule } from '@angular/material/card';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -8,21 +10,21 @@ import { CampaignService } from 'src/app/services/campaign.service';
 import { ActivatedRoute } from '@angular/router';
 
 import { from, of } from "rxjs";
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('CampaignDetailComponent', () => {
   let component: CampaignDetailComponent;
   let fixture: ComponentFixture<CampaignDetailComponent>;
-  let route: ActivatedRoute;
   let campaignService: CampaignService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CampaignDetailComponent, ShowTxhashComponent],
-      imports: [RouterTestingModule, MatCardModule], providers: [CampaignService, {
+      imports: [RouterTestingModule.withRoutes(routes), FormsModule], providers: [CampaignService, {
         provide: ActivatedRoute, useValue: {
           params: of({ address: '0x123' })
         }
-      }]
+      }],schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   });
 
